@@ -28,6 +28,10 @@ fn section_sums(input: Lines<BufReader<File>>) -> Vec<usize> {
         }
     }
 
+    if let Some(x) = current_sum {
+        output.push(x);
+    }
+    
     output
 }
 
