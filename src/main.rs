@@ -8,9 +8,9 @@ fn get_input() -> Lines<BufReader<File>> {
     reader.lines()
 }
 
-fn section_sums(input: Lines<BufReader<File>>) -> Vec<usize> {
+fn section_sums(input: Lines<BufReader<File>>) -> Vec<u64> {
     let mut output = Vec::new();
-    let mut current_sum: Option<usize> = None;
+    let mut current_sum: Option<u64> = None;
 
     for line in input {
         let line = line.unwrap();
@@ -20,25 +20,25 @@ fn section_sums(input: Lines<BufReader<File>>) -> Vec<usize> {
             continue;
         }
 
-        let parsed_value = line.parse::<usize>().unwrap();
-        if let Some(x) = current_sum {
-            current_sum = Some(parsed_value + x);
+        let parsed_value = line.parse::<u64>().unwrap();
+        current_sum = Some(if let Some(x) = current_sum {
+            parsed_value + x
         } else {
-            current_sum = Some(parsed_value);
-        }
+            parsed_value
+        });
     }
 
     if let Some(x) = current_sum {
         output.push(x);
     }
-    
+
     output
 }
 
 fn puzzle_1() {
     let max = section_sums(get_input())
         .into_iter()
-        .reduce(usize::max)
+        .reduce(u64::max)
         .unwrap();
 
     println!("{max}");
@@ -47,7 +47,7 @@ fn puzzle_1() {
 fn puzzle_2() {
     let mut x = section_sums(get_input())
         .into_iter()
-        .collect::<Vec<usize>>();
+        .collect::<Vec<u64>>();
 
     x.sort_by(|a, b| b.cmp(a));
 
